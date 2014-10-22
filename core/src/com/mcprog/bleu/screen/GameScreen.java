@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.mcprog.bleu.Bleu;
 import com.mcprog.bleu.lib.Assets;
 import com.mcprog.bleu.lib.BleuConstants;
@@ -22,6 +23,7 @@ public class GameScreen implements Screen {
 	private Rectangle rect1;
 	
 	private float stateTime;
+	private Vector3 touch;
 	
 	public GameScreen(Bleu game) {
 		this.game = game;
@@ -49,7 +51,9 @@ public class GameScreen implements Screen {
 		batch.begin();
 		for (int i = 32; i < 64 * 9; i += 64) {
 			for (int j = 32; j < 64 * 9; j += 64) {
-				if (Gdx.input.getX() / 2 > i && Gdx.input.getX() / 2 < i + 64 && BleuConstants.HEIGHT - Gdx.input.getY() > j && BleuConstants.HEIGHT - Gdx.input.getY() < j + 64) {
+				
+				touch = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+				if (touch.x > i && touch.x < i + 64 && touch.y > j && touch.y < j + 64) {
 					batch.draw(Assets.loadingSheet, i, j);
 				} else {
 					
@@ -58,7 +62,7 @@ public class GameScreen implements Screen {
 			}
 		}
 		batch.end();
-		System.out.println(Gdx.input.getX() + ", " + Gdx.input.getY());
+		System.out.println(Gdx.graphics.getWidth() + ", " + Gdx.graphics.getHeight());
 		
 	}
 
