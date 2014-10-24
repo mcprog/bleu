@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.mcprog.bleu.Bleu;
 import com.mcprog.bleu.lib.Assets;
 import com.mcprog.bleu.lib.BleuConstants;
+import com.mcprog.bleu.piece.Tile;
 
 public class GameScreen implements Screen {
 
@@ -21,6 +22,8 @@ public class GameScreen implements Screen {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Rectangle rect1;
+	private Tile tile1;
+	private Tile[][] tiles;
 	
 	private float stateTime;
 	private Vector3 touch;
@@ -34,6 +37,12 @@ public class GameScreen implements Screen {
 		batch = new SpriteBatch();
 		
 		rect1 = new Rectangle(100, 100, 100, 100);
+		tiles = new Tile[9][9];
+		for (int i = 0; i < 9; ++i) {
+			for (int j = 0; j < 9; ++j) {
+				tiles[i][j] = new Tile(i * 64 + 32, j * 64 + 32);
+			}
+		}
 	}
 	
 	@Override
@@ -46,23 +55,17 @@ public class GameScreen implements Screen {
 		stateTime += delta;
 		Assets.loadingFrameCurrent = Assets.loadingAnimation.getKeyFrame(stateTime * 2f, true);
 		
+		touch = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 		batch.setProjectionMatrix(camera.combined);
 		
 		batch.begin();
-		for (int i = 32; i < 64 * 9; i += 64) {
-			for (int j = 32; j < 64 * 9; j += 64) {
-				
-				touch = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-				if (touch.x > i && touch.x < i + 64 && touch.y > j && touch.y < j + 64) {
-					batch.draw(Assets.loadingSheet, i, j);
-				} else {
-					
-					batch.draw(Assets.tile, i, j);
-				}
+		for (int i = 0; i < 9; ++i) {
+			for (int j = 0; j < 9; ++j) {
+//				
+				tiles[i][j].draw(batch, touch);
 			}
 		}
 		batch.end();
-		System.out.println(Gdx.graphics.getWidth() + ", " + Gdx.graphics.getHeight());
 		
 	}
 

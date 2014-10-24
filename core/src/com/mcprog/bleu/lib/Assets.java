@@ -14,6 +14,7 @@ public class Assets {
 	public static TextureRegion loadingFrameCurrent;
 	public static Animation loadingAnimation;
 	public static Texture tile;
+	public static Texture agrande;
 
 	public static void load () {
 		loadingSheet = new Texture(Gdx.files.internal("loadingsheet.png"));
@@ -29,5 +30,6 @@ public class Assets {
 		loadingAnimation = new Animation(.2F, loadingFrames);
 		
 		tile = new Texture(Gdx.files.internal("tile.png"));
+		agrande = new Texture(Gdx.files.internal("agrande.jpg"));
 	}
 }
